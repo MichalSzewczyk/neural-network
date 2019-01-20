@@ -1,4 +1,5 @@
 import pandas
+import nltk
 
 
 class DataLoader:
@@ -11,6 +12,7 @@ class DataLoader:
         print('Removed entries without labels: ')
         print(removed.head(10))
         print('-------------------------------------------')
+        data_frame = DataLoader.tokenize(data_frame)
         return data_frame
 
     @staticmethod
@@ -33,3 +35,11 @@ class DataLoader:
         removed = data_frame[data_frame.gold_label == '-']
         data_frame = data_frame[data_frame.gold_label != '-']
         return data_frame, removed
+
+    @staticmethod
+    def tokenize(data_frame):
+        data_frame['sentence1'] = data_frame['sentence1'].apply(lambda x: x.lower())
+        data_frame['sentence1'] = data_frame['sentence1'].apply(nltk.word_tokenize)
+        data_frame['sentence2'] = data_frame['sentence2'].apply(lambda x: x.lower())
+        data_frame['sentence2'] = data_frame['sentence2'].apply(nltk.word_tokenize)
+        return data_frame
