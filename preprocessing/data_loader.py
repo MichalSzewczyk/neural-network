@@ -13,6 +13,8 @@ class DataLoader:
         print(removed.head(10))
         print('-------------------------------------------')
         data_frame = DataLoader.tokenize(data_frame)
+        DataLoader.print_without_duplicates(data_frame)
+        data_frame = DataLoader.add_metadata_tokens(data_frame)
         return data_frame
 
     @staticmethod
@@ -43,3 +45,18 @@ class DataLoader:
         data_frame['sentence2'] = data_frame['sentence2'].apply(lambda x: x.lower())
         data_frame['sentence2'] = data_frame['sentence2'].apply(nltk.word_tokenize)
         return data_frame
+
+    @staticmethod
+    def add_metadata_tokens(data_frame):
+        data_frame['sentence1'] = data_frame['sentence1'].apply(lambda array: ['<bos>'] + array)
+        data_frame['sentence1'] = data_frame['sentence1'].apply(lambda array: array + ['<eos>'])
+
+        data_frame['sentence2'] = data_frame['sentence2'].apply(lambda array: ['<bos>'] + array)
+        data_frame['sentence2'] = data_frame['sentence2'].apply(lambda array: array + ['<eos>'])
+        return data_frame
+
+    @staticmethod
+    def print_without_duplicates(data_frame):
+        result_set = set()
+        data_frame['sentence1'].apply(lambda array: result_set.update(array))
+        print('Amount of words without duplicates: ' + len(result_set).__str__())
