@@ -18,9 +18,8 @@ class EmbeddingGenerator:
         result_map['<unk>'] = unk
         EmbeddingGenerator.count_and_log_all_words(data_frame)
         data_frame = EmbeddingGenerator.replace_unknown_words(data_frame, result_map)
-        EmbeddingGenerator.count_and_log_unknown_words(data_frame)
+        EmbeddingGenerator.replace_words_with_vectors(data_frame, result_map)
 
-        print('Embedding data: ' + str(data_frame))
         return data_frame
 
     @staticmethod
@@ -43,19 +42,18 @@ class EmbeddingGenerator:
         print('Number of words: ' + str(len(result_list)))
 
     @staticmethod
-    def count_and_log_unknown_words(data_frame):
+    def replace_words_with_vectors(data_frame, result_map):
+        data_frame['sentence1'] = data_frame['sentence1'].apply(
+            lambda x: EmbeddingGenerator.replace_words_vector_with_matrix(x, result_map))
+        data_frame['sentence2'] = data_frame['sentence2'].apply(
+            lambda x: EmbeddingGenerator.replace_words_vector_with_matrix(x, result_map))
+
+    @staticmethod
+    def replace_words_vector_with_matrix(words, result_map):
         result_list = []
-        for array in data_frame['sentence1']:
-            for word in array:
-                if word is '<unk>':
-                    result_list.append(word)
-
-        for array in data_frame['sentence2']:
-            for word in array:
-                if word is '<unk>':
-                    result_list.append(word)
-
-        print('Number of unknown words: ' + str(len(result_list)))
+        for word in words:
+            result_list.append(result_map[word])
+        return result_list
 
     @staticmethod
     def replace_unknown_words(data_frame, result_map):
@@ -64,7 +62,7 @@ class EmbeddingGenerator:
             lambda row: EmbeddingGenerator.replace_unknown(row, result_map, result_list))
         data_frame['sentence2'] = data_frame['sentence2'].apply(
             lambda row: EmbeddingGenerator.replace_unknown(row, result_map, result_list))
-        print('FOO: Number of words: ' + str(len(result_list)))
+        print('Number of unknown words: ' + str(len(result_list)))
         return data_frame
 
     @staticmethod
