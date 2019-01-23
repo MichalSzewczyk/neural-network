@@ -9,9 +9,9 @@ class WordsEncoder:
     def encode_words(data_frame, file_name):
         glove = pandas.read_csv(file_name, sep=' ', header=None, quoting=csv.QUOTE_NONE,
                                 lineterminator='\n')
-        eos = [random.uniform(-1, 1) for _ in range(201)]
-        bos = [random.uniform(-1, 1) for _ in range(201)]
-        unk = [random.uniform(-1, 1) for _ in range(201)]
+        eos = [random.uniform(-1, 1) for _ in range(199)]
+        bos = [random.uniform(-1, 1) for _ in range(199)]
+        unk = [random.uniform(-1, 1) for _ in range(199)]
         result_map = WordsEncoder.get_as_map(glove)
         result_map['<eos>'] = eos
         result_map['<bos>'] = bos
