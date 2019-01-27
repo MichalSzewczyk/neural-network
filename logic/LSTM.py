@@ -1,10 +1,10 @@
-from torch import nn, FloatTensor
 import torch
+from torch import nn, FloatTensor
 
 
-class LSTM_NLI(nn.Module):
+class LSTM(nn.Module):
     def __init__(self, word2embed, id2train, id2valid, batch_size, max_len_sent, embedding_dim, hidden_dim, output_dim):
-        super(LSTM_NLI, self).__init__()
+        super(LSTM, self).__init__()
         self.word2embed = word2embed
         self.id2train = id2train
         self.id2valid = id2valid
