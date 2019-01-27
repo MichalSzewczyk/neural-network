@@ -27,7 +27,7 @@ def train_model_one_epoch(epoch, model, optimizer, train_batches, valid_batches,
         total += len(w)
         train_acc = 100. * correct / total
         print(model.parameters())
-        print("REQUIRES_GRAD ", answer.requires_grad, " ", labels.requires_grad)
+        print("Requires grad: answer={}, labels={}".format(answer.requires_grad, labels.requires_grad))
         loss = criterion(answer, labels)
         loss.backward()
         optimizer.step()
@@ -44,18 +44,17 @@ def train_model_one_epoch(epoch, model, optimizer, train_batches, valid_batches,
 
             valid_acc = 100. * valid_correct / len(batch_size)
 
-            print(
-                "EPOCH {}, batch_id {}\nLoss at training {} and accuracy{}\nLoss at validation {} and valid accuracy {}".format(
-                    epoch, cnt, loss.item(), train_acc, valid_loss.item(), valid_acc))
+            print("epoch: {}, batch_id: {}".format(epoch, cnt))
+            print("Loss at training: {} and accuracy{}".format(loss.item(), train_acc))
+            print("Loss at validation {} and valid accuracy {}".format(valid_loss.item(), valid_acc))
 
             if valid_acc > best_valid_acc:
                 best_valid_acc = valid_acc
-                path, save_classify_layer
-                print("NEW RECORD ACHIEVED {}".format(valid_acc))
+                print("New best valid acc: {}".format(best_valid_acc))
 
         elif cnt % log_results == 0:
-            print("EPOCH {}, batch_id {}\nLoss at training {} and accuracy{}".format(
-                epoch, cnt, loss.item(), train_acc))
+            print("EPOCH {}, batch_id {}".format(epoch, cnt))
+            print("Loss at training {} and accuracy{}".format(loss.item(), train_acc))
     return best_valid_acc
 
 

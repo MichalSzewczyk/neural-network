@@ -13,7 +13,7 @@ from preprocessing.read_corpus import read_dataset
 def preprocessing():
     train_data = read_dataset('data/train.txt')
     test_data = read_dataset('data/test.txt')
-    valid_data = read_dataset('data/dev.txt')
+    valid_data = read_dataset('data/valid.txt')
 
     word2id, id2word, seq2words, train_labels = tokenize_text(train_data)
     test2id, id2test, testseq2words, _ = tokenize_text(test_data)
